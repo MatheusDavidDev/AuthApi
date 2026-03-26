@@ -61,6 +61,12 @@ public class UsuarioDao : IUsuarioDao
              }).ToListAsync();
     }
 
+    public async Task<Usuario?> UsuarioByRefreshToken(string refreshToken)
+    {
+        return await _authDbContext.Usuarios
+            .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+    }
+
     public async Task Adicionar(Usuario usuario)
     {
         await _authDbContext.Usuarios.AddAsync(usuario);

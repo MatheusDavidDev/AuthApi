@@ -1,11 +1,12 @@
 ﻿using AuthApi.Application.Interfaces;
+using AuthApi.Application.Responses;
 using AuthApi.Core.Utils;
 using AuthApi.Domain.Aggregates.Usuario;
 using MediatR;
 
 namespace AuthApi.Application.Commands.UsuarioCommands.LoginCommand;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 {
     private readonly IUsuarioDao _usuarioDao;
     private readonly ITokenService _tokenService;
@@ -16,7 +17,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
         _tokenService = tokenService;
     }
 
-    public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var usuario = await _usuarioDao.UsuarioByEmail(request.Email);
 
@@ -28,6 +29,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
         if (!senhaValida)
             throw new Exception("Senha inválida");
 
-        return _tokenService.GenerateToken(usuario);
+        var token = _tokenService.GenerateToken(usuario);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+
+        usuario.RefreshToken = refreshToken;
+        usuario.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+        _usuarioDao.Update(usuario);
+        await _usuarioDao.SaveChangesAsync();
+
+        return new LoginResponse(token, refreshToken);
+
     }
 }

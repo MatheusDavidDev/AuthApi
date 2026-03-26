@@ -14,6 +14,8 @@ public interface IUsuarioDao
 
     public Task<IEnumerable<UsuarioDto?>> ListarUsuarios();
 
+    public Task<Usuario?> UsuarioByRefreshToken(string refreshToken);
+
     public Task Adicionar (Usuario usuario);
 
     public void Update(Usuario usuario);
