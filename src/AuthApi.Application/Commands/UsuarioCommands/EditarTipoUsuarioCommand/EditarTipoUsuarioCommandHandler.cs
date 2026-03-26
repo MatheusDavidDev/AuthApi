@@ -1,20 +1,20 @@
-﻿using AuthApi.Infra;
+﻿using AuthApi.Domain.Aggregates.Usuario;
 using MediatR;
 
 namespace AuthApi.Application.Commands.UsuarioCommands.EditarUsuarioCommand;
 
 public class EditarTipoUsuarioCommandHandler : IRequestHandler<EditarTipoUsuarioCommand>
 {
-    private readonly AuthApiDbContext _context;
+    private readonly IUsuarioDao _usuarioDao;
 
-    public EditarTipoUsuarioCommandHandler(AuthApiDbContext context)
+    public EditarTipoUsuarioCommandHandler(IUsuarioDao usuarioDao)
     {
-        _context = context;
+        _usuarioDao = usuarioDao;
     }
 
-    public Task Handle(EditarTipoUsuarioCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditarTipoUsuarioCommand request, CancellationToken cancellationToken)
     {
-        var usuario = _context.Usuarios.FirstOrDefault(x => x.Id == request.IdUsuario);
+        var usuario = await _usuarioDao.UsuarioById(request.IdUsuario);
         if (usuario == null)
             throw new Exception("Usuário não encontrado");
 
@@ -22,9 +22,10 @@ public class EditarTipoUsuarioCommandHandler : IRequestHandler<EditarTipoUsuario
             throw new Exception("O tipo do usuário já é o mesmo");
 
         usuario.Tipo = request.Tipo;
-        _context.Usuarios.Update(usuario);
-        _context.SaveChanges();
 
-        return Task.CompletedTask;
+        _usuarioDao.Update(usuario);
+
+        await _usuarioDao.SaveChangesAsync();
+
     }
 }

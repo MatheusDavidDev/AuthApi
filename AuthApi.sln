@@ -10,12 +10,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi.Api", "src\AuthApi\AuthApi.Api.csproj", "{F4EB48F1-69FD-47F9-9FC8-376D3DB93E23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi.Application", "src\AuthApi.Application\AuthApi.Application.csproj", "{5FBFA65C-5966-49AD-A21A-9690722A6B51}"
+	ProjectSection(ProjectDependencies) = postProject
+		{71688AA8-199A-482A-9E38-4E928E186985} = {71688AA8-199A-482A-9E38-4E928E186985}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi.Core", "src\AuthApi.Core\AuthApi.Core.csproj", "{5E0DBEE7-DACE-4A30-B451-7C48D89EB61F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi.Domain", "src\AuthApi.Domain\AuthApi.Domain.csproj", "{71688AA8-199A-482A-9E38-4E928E186985}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthApi.Infra", "src\AuthApi.Infra\AuthApi.Infra.csproj", "{8D33A6D3-F88A-4BE8-A10F-E09F8A7D3F6B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E0DBEE7-DACE-4A30-B451-7C48D89EB61F} = {5E0DBEE7-DACE-4A30-B451-7C48D89EB61F}
+		{5FBFA65C-5966-49AD-A21A-9690722A6B51} = {5FBFA65C-5966-49AD-A21A-9690722A6B51}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,5 +105,8 @@ Global
 		{5E0DBEE7-DACE-4A30-B451-7C48D89EB61F} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{71688AA8-199A-482A-9E38-4E928E186985} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{8D33A6D3-F88A-4BE8-A10F-E09F8A7D3F6B} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7BE2BFD-388D-46EE-972A-9075CE160E0D}
 	EndGlobalSection
 EndGlobal

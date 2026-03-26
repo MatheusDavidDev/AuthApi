@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuthApi.Core\AuthApi.Core.csproj" />
-    <ProjectReference Include="..\AuthApi.Infra\AuthApi.Infra.csproj" />
+    <ProjectReference Include="..\AuthApi.Domain\AuthApi.Domain.csproj" />
   </ItemGroup>
 
 </Project>

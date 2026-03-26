@@ -1,18 +1,15 @@
 ﻿using AuthApi.Core.Utils;
 using AuthApi.Domain.Aggregates.Usuario;
-using AuthApi.Infra;
 using MediatR;
 
 namespace AuthApi.Application.Commands.UsuarioCommands.CadastrarUsuarioCommand;
 
 public class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUsuarioCommand, Guid>
 {
-    private readonly AuthApiDbContext _context;
     private readonly IUsuarioDao _usuarioDao;
 
-    public CadastrarUsuarioCommandHandler(AuthApiDbContext context, IUsuarioDao usuarioDao)
+    public CadastrarUsuarioCommandHandler(IUsuarioDao usuarioDao)
     {
-        _context = context;
         _usuarioDao = usuarioDao;
     }
 
@@ -29,8 +26,8 @@ public class CadastrarUsuarioCommandHandler : IRequestHandler<CadastrarUsuarioCo
             command.Tipo
         );
 
-        _context.Add(usuario);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _usuarioDao.Adicionar(usuario);
+        await _usuarioDao.SaveChangesAsync();
 
         return usuario.Id;
     }

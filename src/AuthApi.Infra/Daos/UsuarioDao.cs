@@ -13,7 +13,7 @@ public class UsuarioDao : IUsuarioDao
         _authDbContext = authApiDbContext;
     }
 
-    public async Task<UsuarioDto?> UsuarioById(Guid id)
+    public async Task<UsuarioDto?> UsuarioDtoById(Guid id)
     {
         return await _authDbContext.Usuarios
                             .Where(u => u.Id == id)
@@ -26,7 +26,12 @@ public class UsuarioDao : IUsuarioDao
                             }).FirstOrDefaultAsync();
     }
 
-    public async Task<UsuarioDto?> UsuarioByEmail(string email)
+    public async Task<Usuario?> UsuarioById(Guid id)
+    {
+        return await _authDbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+    }
+
+    public async Task<UsuarioDto?> UsuarioDtoByEmail(string email)
     {
         return await _authDbContext.Usuarios
                             .Where(u => u.Email == email)
@@ -39,6 +44,11 @@ public class UsuarioDao : IUsuarioDao
                             }).FirstOrDefaultAsync();
     }
 
+    public async Task<Usuario?> UsuarioByEmail(string email)
+    {
+        return await _authDbContext.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task<IEnumerable<UsuarioDto?>> ListarUsuarios()
     {
         return await _authDbContext.Usuarios
@@ -49,5 +59,25 @@ public class UsuarioDao : IUsuarioDao
                  Email = u.Email,
                  Tipo = u.Tipo.ToString()
              }).ToListAsync();
+    }
+
+    public async Task Adicionar(Usuario usuario)
+    {
+        await _authDbContext.Usuarios.AddAsync(usuario);
+    }
+
+    public void Update(Usuario usuario)
+    {
+         _authDbContext.Update(usuario);
+    }
+
+    public void Remover(Usuario usuario)
+    {
+        _authDbContext.Usuarios.Remove(usuario);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _authDbContext.SaveChangesAsync();
     }
 }
